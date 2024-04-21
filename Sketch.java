@@ -1,36 +1,73 @@
 import processing.core.PApplet;
+import processing.core.PImage;
 
 public class Sketch extends PApplet {
-	
-	
-  /**
-   * Called once at the beginning of execution, put your size all in this method
-   */
+
+  // Image variables
+  PImage imgBackground;
+  PImage imgIcePlanet;
+
+  // Variables to animate the ice planet
+  float fltIceX = 300;
+  float fltIceY;
+  float fltIceXDir = 2;
+
+  // Variables to animate an ellipse
+  float fltCircX = 300;
+  float fltCircY = 25;
+  float fltCircXDir = 6;
+  float fltCircYDir = 3;
+
+  // Size of window
   public void settings() {
-	// put your size call here
-    size(400, 400);
+    size(600, 600);
   }
 
-  /** 
-   * Called once at the beginning of execution.  Add initial set up
-   * values here i.e background, stroke, fill etc.
-   */
+  // Setup values and image loading
   public void setup() {
-    background(210, 255, 173);
-  }
+    
+    // Load and resize the space background
+    imgBackground = loadImage("space.jpg");
+    imgBackground.resize(imgBackground.width / 6, imgBackground.height/6);
 
-  /**
-   * Called repeatedly, anything drawn to the screen goes here
-   */
+    // Load and resize the ice planet
+    imgIcePlanet = loadImage("planet07.png");
+    imgIcePlanet.resize(imgIcePlanet.width / 8, imgIcePlanet.height / 8);
+    
+  }
+  // Images drawn to the screen
   public void draw() {
-	  
-	// sample code, delete this stuff
-    stroke(128);
-    line(150, 25, 270, 350);  
+    
+    // Clear out old frames
+    image(imgBackground, 0, 0);
 
-    stroke(255);
-    line(50, 125, 70, 50);  
+    // Ellipse animation
+    ellipse(fltCircX, fltCircY, 50, 50);
+
+    // Move the ellipse
+    fltCircX += fltCircXDir;
+    fltCircY += fltCircYDir;
+
+    // Change the x direction
+    if (fltCircX > width - 25 || fltCircX < 25){
+      fltCircXDir *= -1;
+    }
+    // Change the y direction
+    if (fltCircY > height - 25 || fltCircY < 25){
+      fltCircYDir *= -1;
+    }
+    
+    // Ice planet animation
+    // Move the planet
+    fltIceX += fltIceXDir;
+    fltIceY = 250 + (100 * sin((float)0.05 * fltIceX));
+
+    // Draw the planet
+    image(imgIcePlanet, fltIceX, fltIceY);
+    
+    // Change the x direction
+    if (fltIceX > width - (imgIcePlanet.width) || fltIceX < 0){
+      fltIceXDir *= -1;
   }
-  
-  // define other methods down here.
+}
 }
